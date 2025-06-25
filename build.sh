@@ -1,5 +1,9 @@
+# run python pre_build script
+python3 tools/scripts/pre_build.py
+
 cd ldd-usb
 make 
-
 cd ..
-python3 tools/cleaner.py
+
+# run python post_build script
+python3 tools/scripts/post_build.py

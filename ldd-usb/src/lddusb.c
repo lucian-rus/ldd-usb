@@ -5,6 +5,11 @@
 
 #include "lddusb.h"
 
+/* if logger support is defined, import kernel logger*/
+#if defined(LOGGER_ENABLED)
+#include "kernel_logger.h"
+#endif
+
 static struct file_operations fops = {
     .owner = THIS_MODULE,
     .open = device_open,
@@ -15,15 +20,14 @@ static struct file_operations fops = {
 
 static int __init lddusb_init(void)
 {
-
-    printk(KERN_INFO "lddusb: registered with major number %d\n", MAJOR_NUM);
+    printk("lddusb: registered with major number %d\n", LDDUSB_MAJOR_NUM);
     return 0;
 }
 
 static void __exit lddusb_exit(void)
 {
-    unregister_chrdev(MAJOR_NUM, DEVICE_NAME);
-    printk(KERN_INFO "lddusb: unregistered\n");
+    unregister_chrdev(LDDUSB_MAJOR_NUM, LDDUSB_DEVICE_NAME);
+    printk("lddusb: unregistered\n");
 }
 
 module_init(lddusb_init);
@@ -31,24 +35,24 @@ module_exit(lddusb_exit);
 
 static int device_open(struct inode *inode, struct file *file)
 {
-    printk(KERN_INFO "lddusb: device opened\n");
+    printk("lddusb: device opened\n");
     return 0;
 }
 
 static int device_release(struct inode *inode, struct file *file)
 {
-    printk(KERN_INFO "lddusb: device closed\n");
+    printk("lddusb: device closed\n");
     return 0;
 }
 
 static ssize_t device_read(struct file *filp, char __user *buffer, size_t length, loff_t *offset)
 {
-    printk(KERN_INFO "lddusb: read\n");
+    printk("lddusb: read\n");
     return 0;
 }
 
 static ssize_t device_write(struct file *filp, const char __user *buffer, size_t length, loff_t *offset)
 {
-    printk(KERN_INFO "lddusb: write\n");
+    printk("lddusb: write\n");
     return length;
 }

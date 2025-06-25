@@ -10,8 +10,9 @@ MODULE_DESCRIPTION("lddusb driver template");
 
 /* generic defines */
 
-#define DEVICE_NAME "lddusb"
-#define MAJOR_NUM 240
+#define LDDUSB_DEVICE_NAME "lddusb"
+
+#define LDDUSB_MAJOR_NUM   240
 
 // Function prototypes
 static int device_open(struct inode *inode, struct file *file);

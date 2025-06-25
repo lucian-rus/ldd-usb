@@ -1,3 +1,7 @@
 {
-    "clean_exceptions": ["ko"]
+    "pre_build_create_dirs": ["./output"],
+
+    "output_cleaner_exceptions": ["ko"],
+    "output_mover_exceptions": [],
+    "output_mover_target_dir": "./output"
 }
