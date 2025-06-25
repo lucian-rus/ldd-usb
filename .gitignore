@@ -1,2 +1,4 @@
 .vscode/
 output/
+tools/.temp
+tools/sandbox

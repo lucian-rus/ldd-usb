@@ -1,6 +1,8 @@
 {
     "pre_build_create_dirs": ["./output"],
-
+    "compiler_flags": ["-DLOGGER_ENABLED"],
+    "linker_flags": [],
+    
     "output_cleaner_exceptions": ["ko"],
     "output_mover_exceptions": [],
     "output_mover_target_dir": "./output"

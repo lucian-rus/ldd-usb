@@ -20,6 +20,9 @@ static struct file_operations fops = {
 
 static int __init lddusb_init(void)
 {
+#if defined(LOGGER_ENABLED)
+    LOG_WARN("got it");
+#endif
     printk("lddusb: registered with major number %d\n", LDDUSB_MAJOR_NUM);
     return 0;
 }
