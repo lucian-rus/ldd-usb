@@ -10,7 +10,18 @@ TEMP_DIR_PATH = "../../tools/.temp"
 SCRIPT_DIR_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
+########################################################################################
+#                               helper functions
+########################################################################################
 def get_parsed_json_data():
+    """
+    Reads and parses the JSON configuration file.
+
+    Returns
+    -------
+    dict
+        Parsed JSON data from the configuration file.
+    """
     file = open(os.path.join(SCRIPT_DIR_PATH, CONFIG_FILE_PATH))
     json_data = json.load(file)
 
@@ -18,28 +29,31 @@ def get_parsed_json_data():
     return json_data
 
 
-# function to get cleaner exception list
-def get_cleaner_exception_list():
+########################################################################################
+#                               parser functions
+########################################################################################
+def get_data_from_json(key):
+    """
+    Retrieves the value from the JSON File based on the given key.
+
+    Returns
+    -------
+    generic data
+        Value of the JSON key.
+    """
     json_data = get_parsed_json_data()
-    return json_data["output_cleaner_exceptions"]
+    return json_data[key]
 
 
-# function to get mover exception list
-def get_mover_exception_list():
-    json_data = get_parsed_json_data()
-    return json_data["output_mover_exceptions"]
-
-
-# function to get the output target directory
-def get_output_mover_target_dir():
-    json_data = get_parsed_json_data()
-    return json_data["output_mover_target_dir"]
-
-
-# function that cleans the directory in which the make command was ran
+########################################################################################
+#                               runner functions
+########################################################################################
 def run_post_build_cleaner(directory):
+    """
+    Cleans the output directory by removing all files except from the ones from the exclusion list.
+    """
     print("> running post build cleaner")
-    cleaner_exception_list = get_cleaner_exception_list()
+    cleaner_exception_list = get_data_from_json("output_cleaner_exceptions")
     for root, dirs, files in os.walk(directory):
         for name in files:
             if name == "Makefile":
@@ -56,11 +70,14 @@ def run_post_build_cleaner(directory):
             os.remove(os.path.join(root, name))
 
 
-# function that moves the generated content to a target directory
+# @todo: maybe make this more generic?
 def run_post_clean_mover(directory):
+    """
+    Moves files to the output directory.
+    """
     print("> running post build mover")
-    mover_exception_list = get_mover_exception_list()
-    output_directory_name = get_output_mover_target_dir()
+    mover_exception_list = get_data_from_json("output_mover_exceptions")
+    output_directory_name = get_data_from_json("output_mover_target_dir")
     for root, dirs, files in os.walk(directory):
         for name in files:
             if name == "Makefile":
@@ -81,6 +98,9 @@ def run_post_clean_mover(directory):
 
 
 def restore_temporary_files():
+    """
+    Removes temporary directory and restores temporary files.
+    """
     print("> removing temporary directory")
     temp_dir = os.path.join(SCRIPT_DIR_PATH, TEMP_DIR_PATH)
     temp_makefile = os.path.join(temp_dir, "Makefile")
@@ -90,6 +110,9 @@ def restore_temporary_files():
 
 
 def post_build_runner(directory):
+    """
+    Runs all post-build steps, such as removing directories and moving files.
+    """
     run_post_build_cleaner(directory)
     run_post_clean_mover(directory)
     restore_temporary_files()

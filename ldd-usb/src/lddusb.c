@@ -29,7 +29,7 @@ static int __init lddusb_init(void)
 
 static void __exit lddusb_exit(void)
 {
-    unregister_chrdev(LDDUSB_MAJOR_NUM, LDDUSB_DEVICE_NAME);
+    // unregister_chrdev(LDDUSB_MAJOR_NUM, LDDUSB_DEVICE_NAME);
     printk("lddusb: unregistered\n");
 }
 
